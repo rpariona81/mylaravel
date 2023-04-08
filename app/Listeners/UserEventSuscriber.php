@@ -2,12 +2,15 @@
 
 namespace App\Listeners;
 
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Http\Request;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Carbon;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class UserEventSuscriber
 {
@@ -42,15 +45,22 @@ class UserEventSuscriber
      */
     public function onUserLogin(Login $event)
     {
+        //https://laracasts.com/discuss/channels/laravel/find-user-roles
+        //https://www.arsys.es/blog/session-laravel#Helper_global_session
         $event->user->logged_in_at = Carbon::now();
-        /*if (config('database.default') == 'mysql') {
-            $event->user->logged_in_at = (Carbon::now())->format('Y-m-d H:i:s');
-        }elseif(config('database.default') == 'sqlsrv'){
-            $event->user->logged_in_at = (Carbon::now())->format('Ymd H:i:s');
-        }else{
-            $event->user->logged_in_at = (Carbon::now())->format('Y-m-d H:i:s');
+        
+        $user_id = $event->user->id;
+        $user_logged = User::where('id',$user_id)->first();
+        session()->put('role', $user_logged->role['rolename']);
+
+        $role_user_logged = Role::where('id',$user_logged->role['id'])->first();
+        //$menus = $role_user_logged->menus;
+        $menus = $role_user_logged->getMenus();
+        //session()->put('menus', $menus);
+        foreach ($menus as $key => $value) {
+            session()->push('usuario.menu', $value['menu']);
         }
-        */
+        
         $event->user->ip_address = $this->request->getClientIp();
         //dd($event->user);//
         $event->user->save();

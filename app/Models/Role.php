@@ -25,6 +25,8 @@ class Role extends Model
         'level'
     ];
 
+    //protected $with = 'menus';
+
     //
     public function users(){
         //return $this->belongsToMany('App\Models\User');
@@ -37,6 +39,7 @@ class Role extends Model
             //->belongsToMany('App\Models\Menu', 't_menu_role', 'menu_id', 'role_id');
     }
 
+    
     public function setCreatedAtAttribute( $value ) {
         if (config('database.default') == 'mysql') {
             $this->attributes['created_at'] = (new Carbon($value))->format('Y-m-d H:i:s');
@@ -55,5 +58,9 @@ class Role extends Model
         }else{
             $this->attributes['updated_at'] = (new Carbon($value))->format('Y-m-d H:i:s');
         }
+    }
+
+    public function getMenus(){
+        return $this->menus;
     }
 }

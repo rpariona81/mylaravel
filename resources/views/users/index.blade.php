@@ -14,6 +14,8 @@
 
             <div class="alert alert-info">
                 <div class="alert-title">Sample table page</div>
+                <button>Export</button>
+
             </div>
 
             <div class="card">
@@ -46,5 +48,20 @@
                 @endif
             </div>
         </div>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="{{ url('lib/jquery.table2excel.js') }}"></script>
+        <script>
+            $("button").click(function(){
+                $("#dataTable").table2excel({
+                    // exclude CSS class
+                    exclude: ".noExl",
+                    name: "Worksheet Name",
+                    filename: "dataTable", //do not include extension
+                    fileext: ".xls", // file extension
+                    preserveColors:true
+                }); 
+            });
+        </script>
     </div>
 @endsection
+

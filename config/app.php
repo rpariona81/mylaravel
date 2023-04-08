@@ -200,6 +200,7 @@ return [
         * Custom Service Providers...
         */
         Collective\Html\HtmlServiceProvider::class,
+
     ],
 
     /*

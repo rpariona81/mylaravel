@@ -19,6 +19,7 @@ Route::get('/', function () {
 
 Route::get('/home/verusers', [App\Http\Controllers\HomeController::class, 'verUsers'])->name('verUsers');
 Route::get('/home/verroles', [App\Http\Controllers\HomeController::class, 'verRoles'])->name('verRoles');
+Route::get('/home/vermenus', [App\Http\Controllers\HomeController::class, 'verMenus'])->name('verMenus');
 
 Auth::routes();
 
